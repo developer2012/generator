@@ -23,6 +23,58 @@
         100% {background-position: 0% 50%;}
     }
 
+    /* Loader Wrapper */
+    .loader-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        flex-direction: column;
+    }
+
+    .loader-container {
+        position: relative;
+        width: 160px;
+        height: 160px;
+    }
+
+    .loader-container img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 4px solid #fff;
+        z-index: 10;
+    }
+
+    .spinner {
+        width: 160px;
+        height: 160px;
+        border: 8px solid rgba(255, 255, 255, 0.1);
+        border-top: 8px solid #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg);}
+        100% { transform: rotate(360deg);}
+    }
+
     .container {
         text-align: center;
         background: rgba(33, 42, 52, 0.95);
@@ -32,6 +84,9 @@
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         width: 400px;
         animation: containerPulse 3s infinite alternate;
+        display: none; /* Avval yashirin */
+        opacity: 0;
+        transition: opacity 0.8s ease;
     }
 
     @keyframes containerPulse {
@@ -89,7 +144,18 @@
         color: #fff;
     }
 
-    /* Oq-qora gradient button */
+    /* Spinner belgisini olib tashlash */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: none;
+    }
+
     button {
         background: linear-gradient(45deg, #000000, #ffffff);
         background-size: 300% 300%;
@@ -116,34 +182,18 @@
         box-shadow: 0 3px 10px rgba(255,255,255,0.2);
     }
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-
-    /* Natija */
     #result {
         margin-top: 25px;
         font-size: 32px;
         font-weight: bold;
         color: #fff;
-        opacity: 1; /* Doim ko‘rinadi */
-        animation: none;
     }
 
     @keyframes fadeInResult {
-        0% { opacity: 0; transform: scale(0.3) rotate(-10deg); color: #fff;}
-        50% { opacity: 1; transform: scale(1.2) rotate(5deg); color: #ccc;}
-        70% { transform: scale(0.95) rotate(-3deg); color: #eee;}
-        100% { opacity: 1; transform: scale(1) rotate(0deg); color: #fff;}
+        0% { opacity: 0; transform: scale(0.3) rotate(-10deg);}
+        100% { opacity: 1; transform: scale(1) rotate(0deg);}
     }
 
-    /* Neon effekt natija uchun */
     @keyframes neonGlow {
         0% { text-shadow: 0 0 5px #fff, 0 0 10px #ccc; }
         50% { text-shadow: 0 0 15px #fff, 0 0 30px #aaa; }
@@ -152,6 +202,15 @@
 </style>
 </head>
 <body>
+    <!-- Loader + Rasm -->
+    <div class="loader-wrapper">
+        <div class="loader-container">
+            <div class="spinner"></div>
+            <img src="/photo_2025-08-27_13-52-51.jpg" alt="Profil rasmi">
+        </div>
+    </div>
+
+    <!-- Card -->
     <div class="container">
         <div class="header">
             <img src="/photo_2025-08-27_13-52-51.jpg" alt="Profil rasmi">
@@ -167,6 +226,19 @@
     </div>
 
 <script>
+window.addEventListener("load", () => {
+    const loaderWrapper = document.querySelector(".loader-wrapper");
+    const container = document.querySelector(".container");
+
+    setTimeout(() => {
+        loaderWrapper.style.display = "none"; // Loader yo‘qoladi
+        container.style.display = "block"; // Card chiqadi
+        setTimeout(() => {
+            container.style.opacity = "1";
+        }, 50);
+    }, 2500); // 2.5 soniya yuklanish
+});
+
 function generateRandom() {
     const min = parseInt(document.getElementById('min').value);
     const max = parseInt(document.getElementById('max').value);
@@ -181,8 +253,8 @@ function generateRandom() {
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
     resultDiv.textContent = "Tasodifiy son: " + randomNum;
 
-    resultDiv.style.animation = "none"; // Reset
-    void resultDiv.offsetWidth; // Reflow for restart
+    resultDiv.style.animation = "none";
+    void resultDiv.offsetWidth;
     resultDiv.style.animation = "fadeInResult 1s ease forwards, neonGlow 2s infinite alternate";
 }
 </script>
