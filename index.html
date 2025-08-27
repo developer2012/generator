@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasodifiy Son Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #000;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        h1 span {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        input {
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            outline: none;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        input:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            background: transparent;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <span style="animation-delay: 0s;">🎲</span>
+        <span style="animation-delay: 0.2s;">T</span>
+        <span style="animation-delay: 0.4s;">a</span>
+        <span style="animation-delay: 0.6s;">s</span>
+        <span style="animation-delay: 0.8s;">o</span>
+        <span style="animation-delay: 1s;">d</span>
+        <span style="animation-delay: 1.2s;">i</span>
+        <span style="animation-delay: 1.4s;">f</span>
+        <span style="animation-delay: 1.6s;">i</span>
+        <span style="animation-delay: 1.8s;">y</span>
+        <span style="animation-delay: 2s;"> </span>
+        <span style="animation-delay: 2.2s;">S</span>
+        <span style="animation-delay: 2.4s;">o</span>
+        <span style="animation-delay: 2.6s;">n</span>
+    </h1>
+
+    <div class="container">
+        <input type="number" id="min" placeholder="Minimal son">
+        <input type="number" id="max" placeholder="Maksimal son">
+        <br>
+        <button onclick="generateRandom()">Generatsiya</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function typeEffect(element, text, speed = 150) {
+            element.innerHTML = "";
+            let i = 0;
+            function typing() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            typing();
+        }
+
+        function generateRandom() {
+            const min = parseInt(document.getElementById('min').value);
+            const max = parseInt(document.getElementById('max').value);
+            const resultDiv = document.getElementById('result');
+
+            if (!isNaN(min) && !isNaN(max) && min <= max) {
+                const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+                typeEffect(resultDiv, randomNum.toString(), 200);
+            } else {
+                typeEffect(resultDiv, "Xato!", 150);
+            }
+        }
+    </script>
+</body>
+</html>
