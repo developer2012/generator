@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tasodifiy Son Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
     body {
         margin: 0;
@@ -84,7 +85,7 @@
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         width: 400px;
         animation: containerPulse 3s infinite alternate;
-        display: none; /* Avval yashirin */
+        display: none;
         opacity: 0;
         transition: opacity 0.8s ease;
     }
@@ -122,6 +123,7 @@
         background-clip: text;
         -webkit-background-clip: text;
         animation: textShine 4s infinite linear;
+        color: grey;
     }
 
     @keyframes textShine {
@@ -142,9 +144,9 @@
     input {
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
+        text-align: center;
     }
 
-    /* Spinner belgisini olib tashlash */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -211,7 +213,7 @@
     </div>
 
     <!-- Card -->
-    <div class="container">
+    <div class="container" id="captureArea">
         <div class="header">
             <img src="/photo_2025-08-27_13-52-51.jpg" alt="Profil rasmi">
             <h4>𝕊𝕡𝕖𝕒𝕜𝕚𝕟𝕘 𝕫𝕠𝕟𝕖.</h4>
@@ -221,7 +223,10 @@
             <input type="number" id="min" placeholder="Minimal son">
             <input type="number" id="max" placeholder="Maksimal son">
         </div>
-        <button onclick="generateRandom()">generate</button>
+        <div>
+            <button onclick="takeScreenshot()">📷 Screenshot</button>
+            <button onclick="generateRandom()">Generate</button>
+        </div>
         <div id="result"></div>
     </div>
 
@@ -231,12 +236,12 @@ window.addEventListener("load", () => {
     const container = document.querySelector(".container");
 
     setTimeout(() => {
-        loaderWrapper.style.display = "none"; // Loader yo‘qoladi
-        container.style.display = "block"; // Card chiqadi
+        loaderWrapper.style.display = "none"; 
+        container.style.display = "block"; 
         setTimeout(() => {
             container.style.opacity = "1";
         }, 50);
-    }, 2500); // 2.5 soniya yuklanish
+    }, 2500); 
 });
 
 function generateRandom() {
@@ -256,6 +261,16 @@ function generateRandom() {
     resultDiv.style.animation = "none";
     void resultDiv.offsetWidth;
     resultDiv.style.animation = "fadeInResult 1s ease forwards, neonGlow 2s infinite alternate";
+}
+
+function takeScreenshot() {
+    const captureArea = document.getElementById('captureArea');
+    html2canvas(captureArea).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'screenshot.png';
+        link.href = canvas.toDataURL();
+        link.click();
+    });
 }
 </script>
 </body>
