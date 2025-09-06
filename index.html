@@ -13,9 +13,21 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: linear-gradient(135deg, #000000, #434343, #666666, #ffffff);
         background-size: 400% 400%;
         animation: gradientBG 8s ease infinite;
+        transition: background 0.5s, color 0.5s;
+    }
+
+    /* DARK MODE */
+    body.dark-mode {
+        background: linear-gradient(135deg, #000000, #434343, #666666, #1a1a1a);
+        color: #fff;
+    }
+
+    /* LIGHT MODE */
+    body.light-mode {
+        background: linear-gradient(135deg, #ffffff, #dddddd, #bbbbbb, #f2f2f2);
+        color: #000;
     }
 
     @keyframes gradientBG {
@@ -78,8 +90,6 @@
 
     .container {
         text-align: center;
-        background: rgba(33, 42, 52, 0.95);
-        color: #fff;
         padding: 40px;
         border-radius: 20px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
@@ -87,13 +97,34 @@
         animation: containerPulse 3s infinite alternate;
         display: none;
         opacity: 0;
-        transition: opacity 0.8s ease;
+        transition: opacity 0.8s ease, background 0.5s, color 0.5s;
     }
 
     @keyframes containerPulse {
         from { transform: scale(1); box-shadow: 0 15px 35px rgba(0,0,0,0.6);}
         to { transform: scale(1.02); box-shadow: 0 20px 45px rgba(255,255,255,0.1);}
     }
+
+    body.dark-mode .container {
+        background: rgba(33, 42, 52, 0.95);
+        color: #fff;
+    }
+
+    body.light-mode .container {
+        background: rgba(255, 255, 255, 0.95);
+        color: #000;
+    }
+    /* Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
     .header {
         display: flex;
@@ -108,7 +139,7 @@
         height: 90px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid #fff;
+        border: 3px solid currentColor;
         transition: transform 0.6s ease;
     }
 
@@ -119,16 +150,13 @@
     h1 {
         font-size: 32px;
         margin-bottom: 20px;
-        background: linear-gradient(90deg, #fff, #fff, #fff);
-        background-clip: text;
-        -webkit-background-clip: text;
         animation: textShine 4s infinite linear;
-        color: grey;
     }
 
     @keyframes textShine {
-        0% { background-position: 0%;}
-        100% { background-position: 200%;}
+        0% { opacity: 0.7;}
+        50% { opacity: 1;}
+        100% { opacity: 0.7;}
     }
 
     input, button {
@@ -136,36 +164,26 @@
         margin: 10px;
         font-size: 18px;
         border-radius: 10px;
-        border: 2px solid #fff;
         outline: none;
-        transition: all 0.3s ease;
+        transition: all 0.3s ease, background 0.5s, color 0.5s;
     }
 
-    input {
+    body.dark-mode input {
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
-        text-align: center;
+        border: 2px solid #fff;
     }
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    input[type=number] {
-        -moz-appearance: textfield;
-        appearance: none;
+    body.light-mode input {
+        background: rgba(0, 0, 0, 0.05);
+        color: #000;
+        border: 2px solid #000;
     }
 
     button {
-        background: linear-gradient(45deg, #000000, #ffffff);
-        background-size: 300% 300%;
-        color: #000;
         font-weight: bold;
-        box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+        cursor: pointer;
         animation: buttonPulse 2.5s infinite alternate;
-        transition: 0.4s;
     }
 
     @keyframes buttonPulse {
@@ -173,22 +191,23 @@
         100% {transform: scale(1.05); box-shadow: 0 8px 25px rgba(255,255,255,0.5);}
     }
 
-    button:hover {
-        background-position: 100% 0;
-        transform: scale(1.1) rotate(1deg);
-        cursor: pointer;
+    body.dark-mode button {
+        background: linear-gradient(45deg, #000000, #555555);
+        color: #fff;
+        border: 2px solid #fff;
     }
 
-    button:active {
-        transform: scale(0.95);
-        box-shadow: 0 3px 10px rgba(255,255,255,0.2);
+    body.light-mode button {
+        background: linear-gradient(45deg, #eeeeee, #cccccc);
+        color: #000;
+        border: 2px solid #000;
     }
 
     #result {
         margin-top: 25px;
         font-size: 32px;
         font-weight: bold;
-        color: #fff;
+        animation: neonGlow 2s infinite alternate;
     }
 
     @keyframes fadeInResult {
@@ -201,9 +220,24 @@
         50% { text-shadow: 0 0 15px #fff, 0 0 30px #aaa; }
         100% { text-shadow: 0 0 5px #fff, 0 0 10px #ccc; }
     }
+
+    /* TOGGLE BUTTON */
+    .mode-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        z-index: 1000;
+    }
 </style>
 </head>
-<body>
+<body class="dark-mode">
+    <!-- Mode Toggle -->
+    <button class="mode-toggle" onclick="toggleMode()">🌙 Dark</button>
+
     <!-- Loader + Rasm -->
     <div class="loader-wrapper">
         <div class="loader-container">
@@ -271,6 +305,20 @@ function takeScreenshot() {
         link.href = canvas.toDataURL();
         link.click();
     });
+}
+
+function toggleMode() {
+    const body = document.body;
+    const toggleBtn = document.querySelector(".mode-toggle");
+
+    body.classList.toggle("dark-mode");
+    body.classList.toggle("light-mode");
+
+    if (body.classList.contains("dark-mode")) {
+        toggleBtn.textContent = "🌙 Dark";
+    } else {
+        toggleBtn.textContent = "☀️ Light";
+    }
 }
 </script>
 </body>
